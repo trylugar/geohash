@@ -49,6 +49,18 @@ func TestPrefixProperty(t *testing.T) {
 	}
 }
 
+// Verify the prefix property with maximum precision.
+// This is a special case where we encode with the maximum precision of 12
+func TestPrefixPropertyMaxPrecision(t *testing.T) {
+	for _, c := range testcases {
+		hash := EncodeWithMaxPrecision(c.lat, c.lng)
+		if c.hash != string(hash[:]) {
+			t.Errorf("incorrect encode string result for (%v,%v) at precision %d: %s != %s",
+				c.lat, c.lng, 12, c.hash, string(hash[:]))
+		}
+	}
+}
+
 // Verify all string hashes pass validation.
 func TestValidate(t *testing.T) {
 	for _, c := range testcases {

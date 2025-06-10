@@ -31,11 +31,19 @@ func Encode(lat, lng float64) string {
 
 // EncodeWithPrecision encodes the point (lat, lng) as a string geohash with
 // the specified number of characters of precision (max 12).
-func EncodeWithPrecision(lat, lng float64, chars uint) string {
+func EncodeWithPrecision(lat, lng float64, chars uint)string {
 	bits := 5 * chars
 	inthash := EncodeIntWithPrecision(lat, lng, bits)
 	enc := base32encoding.Encode(inthash)
 	return enc[12-chars:]
+}
+
+// EncodeWithMaxPrecision encodes the point (lat, lng) as a [12]byte geohash
+func EncodeWithMaxPrecision(lat, lng float64) [12]byte {
+	bits := uint(5 * 12) // 12 characters of precision
+	inthash := EncodeIntWithPrecision(lat, lng, bits)
+	enc := base32encoding.EncodeAsSlice(inthash)
+	return enc
 }
 
 // EncodeInt encodes the point (lat, lng) to a 64-bit integer geohash.

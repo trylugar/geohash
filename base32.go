@@ -48,5 +48,15 @@ func (e *encoding) Encode(x uint64) string {
 	return string(b[:])
 }
 
+// Encode bits of 64-bit word into a string.
+func (e *encoding) EncodeAsSlice(x uint64) [12]byte {
+	b := [12]byte{}
+	for i := 0; i < 12; i++ {
+		b[11-i] = e.encode[x&0x1f]
+		x >>= 5
+	}
+	return b
+}
+
 // Base32Encoding with the Geohash alphabet.
 var base32encoding = newEncoding("0123456789bcdefghjkmnpqrstuvwxyz")
